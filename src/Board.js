@@ -79,11 +79,40 @@
     //
     // test if a specific row on this board contains a conflict
     hasRowConflictAt: function(rowIndex) {
-      return false; // fixme
+      var context = this;
+      var total = 0;
+
+      for (var i = 0; i < context.attributes[rowIndex].length; i++) {
+        if (context.attributes[rowIndex][i] === 1) {
+          total++;
+        }
+      }
+
+      if (total > 1) {
+        return true;
+      }
+
+      return false;
     },
 
     // test if any rows on this board contain conflicts
     hasAnyRowConflicts: function() {
+      var context = this;
+
+      for (var key in context.attributes) {
+        var total = 0;
+
+        for (var i = 0; i < context.attributes[key].length; i++) {
+          if (context.attributes[key][i] === 1) {
+            total++;
+          }
+        }
+
+        if (total > 1) {
+          return true;
+        }
+      }
+
       return false; // fixme
     },
 
