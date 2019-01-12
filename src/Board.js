@@ -168,12 +168,69 @@
     //
     // test if a specific major diagonal on this board contains a conflict
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+      var row = 0;
+      var col = majorDiagonalColumnIndexAtFirstRow;
+      var context = this;
+      var total = 0;
+
+      if(col >= 0){
+        for(var i = col; i < context.attributes[0].length; i++){
+          if (context.attributes[row][i] === 1){
+            total++;
+          }
+          row++;
+        }
+
+        if (total > 1) {
+          return true;
+        }
+      }
+
+      return false;
     },
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
-      return false; // fixme
+      var context = this;
+      var startingPoints = [];
+      var conflict = false;
+
+      for(var i=0; i< context.attributes[0].length; i++){
+        startingPoints.push([0, i]);
+        startingPoints.push([i, 0]);
+      }
+
+      for(var j = 0; j < startingPoints.length; j++){
+        var total =0;
+
+        function recursion(position, total){
+          if(position[0] >= context.attributes[0].length || position[1] >= context.attributes[0].length){
+            if(total >1){
+              conflict = true;
+              return;
+            } else {
+              return;
+            }
+          }
+
+          var row = position[0];
+          var col = position[1];
+          console.log(row, col);
+
+          if(context.attributes[row][col] === 1){
+            total++;
+          }
+
+          var row = position[0] + 1;
+          var col = position[1] + 1;
+
+          return recursion([row, col], total);
+        }
+
+        recursion(startingPoints[j], total);
+      }
+
+      return conflict;
     },
 
 
@@ -183,6 +240,7 @@
     //
     // test if a specific minor diagonal on this board contains a conflict
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
+
       return false; // fixme
     },
 
