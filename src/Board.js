@@ -113,7 +113,7 @@
         }
       }
 
-      return false; // fixme
+      return false;
     },
 
 
@@ -123,12 +123,42 @@
     //
     // test if a specific column on this board contains a conflict
     hasColConflictAt: function(colIndex) {
-      return false; // fixme
+      var context = this;
+      var total = 0;
+
+      for (var key in context.attributes) {
+        if (context.attributes[key][colIndex] === 1) {
+          total++;
+        }
+      }
+
+      if (total > 1) {
+        return true;
+      }
+
+      return false;
     },
 
     // test if any columns on this board contain conflicts
     hasAnyColConflicts: function() {
-      return false; // fixme
+      var context = this;
+      var rowKeys = Object.keys(context.attributes);
+
+      for(var i = 0; i < rowKeys.length; i++){
+        var total = 0;
+
+        for (var key in context.attributes) {
+          if (context.attributes[key][i] === 1) {
+            total++;
+          }
+        }
+
+        if (total > 1) {
+          return true;
+        }
+      }
+
+      return false;
     },
 
 
