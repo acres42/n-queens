@@ -215,7 +215,6 @@
 
           var row = position[0];
           var col = position[1];
-          console.log(row, col);
 
           if(context.attributes[row][col] === 1){
             total++;
@@ -240,13 +239,68 @@
     //
     // test if a specific minor diagonal on this board contains a conflict
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
+      var row = 0;
+      var col = minorDiagonalColumnIndexAtFirstRow;
+      var context = this;
+      var total = 0;
 
-      return false; // fixme
+      if(col >= 0 && col < context.attributes[0].length){
+        for(var i = col; i >= 0; i--){
+          if (context.attributes[row][i] === 1){
+            total++;
+          }
+          row++;
+        }
+
+        if (total > 1) {
+          return true;
+        }
+      }
+
+      return false;
     },
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
-      return false; // fixme
+      var context = this;
+      var startingPoints = [];
+      var conflict = false;
+
+      for(var i=0; i< context.attributes[0].length; i++){
+        startingPoints.push([0, i]);
+        startingPoints.push([i, context.attributes[0].length-1]);
+      }
+
+      for(var j = 0; j < startingPoints.length; j++){
+        var total =0;
+
+        function recursion(position, total){
+          if(position[0] >= context.attributes[0].length || position[1] < 0){
+            if(total >1){
+              conflict = true;
+              return;
+            } else {
+              return;
+            }
+          }
+
+          var row = position[0];
+          var col = position[1];
+
+          if(context.attributes[row][col] === 1){
+            total++;
+          }
+
+          var row = position[0] + 1;
+          var col = position[1] - 1;
+
+          return recursion([row, col], total);
+        }
+
+        recursion(startingPoints[j], total);
+      }
+
+      return conflict;
     }
 
     /*--------------------  End of Helper Functions  ---------------------*/
