@@ -6,7 +6,7 @@
 
   window.Board = Backbone.Model.extend({
 
-    initialize: function (params) {
+    initialize: function(params) {
       if (_.isUndefined(params) || _.isNull(params)) {
         console.log('Good guess! But to use the Board() constructor, you must pass it an argument in one of the following formats:');
         console.log('\t1. An object. To create an empty board of size n:\n\t\t{n: %c<num>%c} - Where %c<num> %cis the dimension of the (empty) board you wish to instantiate\n\t\t%cEXAMPLE: var board = new Board({n:5})', 'color: blue;', 'color: black;', 'color: blue;', 'color: black;', 'color: grey;');
@@ -25,7 +25,7 @@
     },
 
     togglePiece: function(rowIndex, colIndex) {
-      this.get(rowIndex)[colIndex] = + !this.get(rowIndex)[colIndex];
+      this.get(rowIndex)[colIndex] = +!this.get(rowIndex)[colIndex];
       this.trigger('change');
     },
 
@@ -62,14 +62,14 @@
     },
 
 
-/*
-         _             _     _
-     ___| |_ __ _ _ __| |_  | |__   ___ _ __ ___ _
-    / __| __/ _` | '__| __| | '_ \ / _ \ '__/ _ (_)
-    \__ \ || (_| | |  | |_  | | | |  __/ | |  __/_
-    |___/\__\__,_|_|   \__| |_| |_|\___|_|  \___(_)
+    /*
+             _             _     _
+         ___| |_ __ _ _ __| |_  | |__   ___ _ __ ___ _
+        / __| __/ _` | '__| __| | '_ \ / _ \ '__/ _ (_)
+        \__ \ || (_| | |  | |_  | | | |  __/ | |  __/_
+        |___/\__\__,_|_|   \__| |_| |_|\___|_|  \___(_)
 
- */
+     */
     /*=========================================================================
     =                 TODO: fill in these Helper Functions                    =
     =========================================================================*/
@@ -144,7 +144,7 @@
       var context = this;
       var rowKeys = Object.keys(context.attributes);
 
-      for(var i = 0; i < rowKeys.length; i++){
+      for (var i = 0; i < rowKeys.length; i++) {
         var total = 0;
 
         for (var key in context.attributes) {
@@ -173,9 +173,9 @@
       var context = this;
       var total = 0;
 
-      if(col >= 0){
-        for(var i = col; i < context.attributes[0].length; i++){
-          if (context.attributes[row][i] === 1){
+      if (col >= 0) {
+        for (var i = col; i < context.attributes[0].length; i++) {
+          if (context.attributes[row][i] === 1) {
             total++;
           }
           row++;
@@ -195,17 +195,20 @@
       var startingPoints = [];
       var conflict = false;
 
-      for(var i=0; i< context.attributes[0].length; i++){
-        startingPoints.push([0, i]);
-        startingPoints.push([i, 0]);
-      }
+      if (context.attributes[0] !== undefined) {
 
-      for(var j = 0; j < startingPoints.length; j++){
-        var total =0;
 
-        function recursion(position, total){
-          if(position[0] >= context.attributes[0].length || position[1] >= context.attributes[0].length){
-            if(total >1){
+        for (var i = 0; i < context.attributes[0].length; i++) {
+          startingPoints.push([0, i]);
+          startingPoints.push([i, 0]);
+        }
+
+        for (var j = 0; j < startingPoints.length; j++) {
+          var total = 0;
+
+        function recursion(position, total) {
+         if (position[0] >= context.attributes[0].length || position[1] >= context.attributes[0].length) {
+            if (total > 1) {
               conflict = true;
               return;
             } else {
@@ -216,7 +219,7 @@
           var row = position[0];
           var col = position[1];
 
-          if(context.attributes[row][col] === 1){
+          if (context.attributes[row][col] === 1) {
             total++;
           }
 
@@ -227,8 +230,8 @@
         }
 
         recursion(startingPoints[j], total);
+        }
       }
-
       return conflict;
     },
 
@@ -244,9 +247,9 @@
       var context = this;
       var total = 0;
 
-      if(col >= 0 && col < context.attributes[0].length){
-        for(var i = col; i >= 0; i--){
-          if (context.attributes[row][i] === 1){
+      if (col >= 0 && col < context.attributes[0].length) {
+        for (var i = col; i >= 0; i--) {
+          if (context.attributes[row][i] === 1) {
             total++;
           }
           row++;
@@ -266,17 +269,19 @@
       var startingPoints = [];
       var conflict = false;
 
-      for(var i=0; i< context.attributes[0].length; i++){
-        startingPoints.push([0, i]);
-        startingPoints.push([i, context.attributes[0].length-1]);
-      }
+      if (context.attributes[0] !== undefined) {
 
-      for(var j = 0; j < startingPoints.length; j++){
-        var total =0;
+        for (var i = 0; i < context.attributes[0].length; i++) {
+          startingPoints.push([0, i]);
+          startingPoints.push([i, context.attributes[0].length - 1]);
+        }
 
-        function recursion(position, total){
-          if(position[0] >= context.attributes[0].length || position[1] < 0){
-            if(total >1){
+        for (var j = 0; j < startingPoints.length; j++) {
+          var total = 0;
+
+        function recursion(position, total) {
+          if (position[0] >= context.attributes[0].length || position[1] < 0) {
+            if (total > 1) {
               conflict = true;
               return;
             } else {
@@ -287,7 +292,7 @@
           var row = position[0];
           var col = position[1];
 
-          if(context.attributes[row][col] === 1){
+          if (context.attributes[row][col] === 1) {
             total++;
           }
 
@@ -297,9 +302,9 @@
           return recursion([row, col], total);
         }
 
-        recursion(startingPoints[j], total);
+          recursion(startingPoints[j], total);
+        }
       }
-
       return conflict;
     }
 
